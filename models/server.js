@@ -1,17 +1,27 @@
 import express from "express"
 import cors from "cors";
-import authRouter from "../routes/user.js";
+import  { router } from "../routes/user.js";
+import { dbConnection } from "../database/config.js";
+import { routerAuth } from "../routes/auth.js";
+
+
 
 export class Server{
     constructor(){
         this.app = express();
         this.port = process.env.PORT
 
+        //conectar base de datos
+        this.conectarDB();
         //middlewares
         this.middlwares();
         //rutas
         this.routes();
       
+    }
+
+    async conectarDB(){
+        await dbConnection();
     }
 
     middlwares(){
@@ -27,7 +37,8 @@ export class Server{
     }
 
     routes(){
-       this.app.use('/api/usuarios', authRouter)
+       this.app.use('/api/usuarios',router)
+       this.app.use('/api/auth',routerAuth)
     }
 
     listen(){
