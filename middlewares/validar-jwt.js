@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-import { myModel } from '../models/usuario.js';
+import { Usuarios } from '../models/usuario.js';
 
 
 export const validarJWT = async(req,res,next)=>{
@@ -14,7 +14,7 @@ export const validarJWT = async(req,res,next)=>{
 
     const {uid} = jwt.verify(token, process.env.SECRETORPRIVATEKEY);
     //leer usuario que corresponse al uid
-    const usuario = await myModel.findById(uid)
+    const usuario = await Usuarios.findById(uid)
 
     if(!usuario) return res.status(401).json({
         msg:'token no existe en DB'
@@ -26,7 +26,6 @@ export const validarJWT = async(req,res,next)=>{
     })
 
     req.usuario = usuario
-    console.log(usuario)
 
     next();
    } catch (error) {

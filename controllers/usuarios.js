@@ -1,6 +1,6 @@
 import { response } from "express"
 import bcryptsjs from "bcryptjs"
-import { myModel } from "../models/usuario.js";
+import { Usuarios } from "../models/usuario.js";
 
 
 
@@ -13,8 +13,8 @@ export const usuariosGet = async(req ,res=response)=>{
   
 
     const resp = await Promise.all([
-        myModel.countDocuments({estado:true}),
-        myModel.find({estado:true})
+        Usuarios.countDocuments({estado:true}),
+        Usuarios.find({estado:true})
             .limit(Number(limite))
             .skip(Number(desde))
     ])
@@ -30,12 +30,12 @@ export const usuariosPut = async(req,res)=>{
 
     //validar contra base de datos
     if(password){
-        //encriptar la contraseña
+    //encriptar la contraseña
         const salt = bcryptsjs.genSaltSync();
         resto.password = bcryptsjs.hashSync(password, salt)
     }
 
-    const usuario = await myModel.findByIdAndUpdate(id,resto)
+    const usuario = await Usuarios.findByIdAndUpdate(id,resto)
 
     res.status(201).json({
         msg:'put api -controlador',
@@ -48,7 +48,7 @@ export const usuariosPost = async(req,res) =>{
 
 
     const {nombre,correo,password,rol} = req.body;
-    const usuario = new myModel({nombre,correo,password,rol});
+    const usuario = new Usuarios({nombre,correo,password,rol});
 
     //verificar si el correo existe
 
@@ -74,7 +74,7 @@ export const usuariosDelete = async(req,res)=>{
     //fisicamente lo borramos
     // const usuario = await myModel.findByIdAndDelete(id)
 
-    const usuario = await myModel.findByIdAndUpdate(id,{estado:false});
+    const usuario = await Usuarios.findByIdAndUpdate(id,{estado:false});
    
     res.status(200).json(usuario)
 }

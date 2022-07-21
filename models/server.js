@@ -3,7 +3,9 @@ import cors from "cors";
 import  { router } from "../routes/user.js";
 import { dbConnection } from "../database/config.js";
 import { routerAuth } from "../routes/auth.js";
-
+import { routerCat } from "../routes/categorias.js";
+import { routerProd } from "../routes/productos.js";
+import { searchRouter } from "../routes/buscar.js";
 
 
 export class Server{
@@ -39,6 +41,9 @@ export class Server{
     routes(){
        this.app.use('/api/usuarios',router)
        this.app.use('/api/auth',routerAuth)
+       this.app.use('/api/categorias',routerCat)
+       this.app.use('/api/productos',routerProd)
+       this.app.use('/api/buscar',searchRouter)
     }
 
     listen(){

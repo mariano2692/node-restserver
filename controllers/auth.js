@@ -1,6 +1,6 @@
 import {response} from "express"
 import bcryptsjs from "bcryptjs"
-import { myModel } from "../models/usuario.js";
+import { Usuarios } from "../models/usuario.js";
 import { generarJWT } from "../helpers/generar-jws.js";
 import { googleVerify } from "../helpers/google-verify.js";
 
@@ -13,7 +13,7 @@ export const login = async( req, res = response) =>{
     try {
         //veriricar email
 
-        const usuario = await myModel.findOne({correo})
+        const usuario = await Usuarios.findOne({correo})
         if(!usuario) return res.status(400).json({
             msg:'usuario/password no son correctos - correo'
         })
@@ -57,7 +57,7 @@ export const googleSingIn = async (req,res= response) => {
     try {
       const {correo,nombre,img} = await googleVerify(id_token);
       
-      let usuario = await myModel.findOne({correo})
+      let usuario = await Usuarios.findOne({correo})
       if(!usuario){
         const data = {
             nombre,
@@ -68,7 +68,7 @@ export const googleSingIn = async (req,res= response) => {
             google:true
 
         }
-        usuario = new myModel(data);
+        usuario = new Usuarios(data);
         await usuario.save();
       }
 
