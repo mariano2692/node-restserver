@@ -6,6 +6,8 @@ import { routerAuth } from "../routes/auth.js";
 import { routerCat } from "../routes/categorias.js";
 import { routerProd } from "../routes/productos.js";
 import { searchRouter } from "../routes/buscar.js";
+import { uploadRoute } from "../routes/upload.js";
+import fileUpload from "express-fileupload";
 
 
 export class Server{
@@ -36,6 +38,14 @@ export class Server{
 
         //directorio publico
         this.app.use(express.static('public'))
+
+        //FileUpload - Carga de archivos
+
+        this.app.use(fileUpload({
+            useTempFiles : true,
+            tempFileDir : '/tmp/',
+            createParentPath:true
+        }));
     }
 
     routes(){
@@ -44,6 +54,7 @@ export class Server{
        this.app.use('/api/categorias',routerCat)
        this.app.use('/api/productos',routerProd)
        this.app.use('/api/buscar',searchRouter)
+       this.app.use('/api/upload',uploadRoute)
     }
 
     listen(){

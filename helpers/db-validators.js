@@ -29,4 +29,14 @@ export const existeCategoria = async(id='')=>{
 export const existeProducto = async (id='') => {
     const existeProducto = await Producto.findById(id)
     if(!existeProducto) throw new Error('el id no existe en la base de datos')
+    
+}
+
+
+//VALIDAR COLECCIONES PERMITIDAS
+
+export const coleccionesPermitidas = async (coleccion='',colecciones=[]) => {
+   
+    if(!colecciones.includes(coleccion)) throw new Error(`la coleccion ${coleccion} no es permitida, ${colecciones}`)
+    return true
 }
